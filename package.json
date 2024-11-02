@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  },
+  "dependencies": {
+    "mongoose": "^8.8.0",
+    "sqlite3": "^5.1.7"
+  }
+}

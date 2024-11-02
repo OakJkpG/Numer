@@ -1,0 +1,24 @@
+# Node modules
+node_modules
+**/node_modules
+
+# Log files
+*.log
+client-logs.txt
+
+# Build output
+dist
+build
+
+# Environment files
+.env
+.env.local
+
+# Git files
+.git
+.gitignore
+
+# Other files
+Dockerfile
+.dockerignore
+README.md

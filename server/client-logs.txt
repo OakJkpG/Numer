@@ -1,0 +1,17 @@
+2024-10-30T22:57:05.802Z: Calculating with inputs: bisection, 1, 10
+2024-10-31T11:49:07.992Z: Calculating with inputs: Graphical Method, 1, 10
+2024-10-31T11:49:09.879Z: Calculating with inputs: bisection, 1, 10
+2024-10-31T11:52:26.675Z: Calculating with inputs: Graphical Method, 1, 10
+2024-10-31T11:52:28.337Z: Calculating with inputs: bisection, 1, 10
+2024-10-31T11:52:34.810Z: Calculating with inputs: bisection, 1, 10
+2024-10-31T11:52:37.961Z: Calculating with inputs: false-position, 1, 10
+2024-10-31T11:57:41.177Z: Calculating with inputs: Graphical Method, 1, 10
+2024-10-31T11:57:43.186Z: Calculating with inputs: bisection, 1, 10
+2024-10-31T11:57:50.988Z: Calculating with inputs: bisection, 1, 10
+2024-10-31T11:57:57.604Z: Calculating with inputs: one-point, 1, 10
+2024-11-02T08:04:45.993Z: Calculating with inputs: Graphical Method, 1, 10
+2024-11-02T08:04:46.150Z: Calculating with inputs: Graphical Method, 1, 10
+2024-11-02T08:04:48.558Z: Calculating with inputs: false-position, 1, 10
+2024-11-02T08:04:51.142Z: Calculating with inputs: bisection, 1, 10
+2024-11-02T08:06:57.657Z: Calculating with inputs: bisection, 1, 10
+2024-11-02T08:07:00.026Z: Calculating with inputs: false-position, 1, 10
