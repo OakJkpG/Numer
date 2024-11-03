@@ -16,8 +16,9 @@ app.use(bodyParser.json());
 // Connection URI and MongoDB client
 const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri);
-let db;;
+let db;
 
+// Connect to MongoDB
 async function connectToMongoDB() {
     try {
         await client.connect();
@@ -25,6 +26,7 @@ async function connectToMongoDB() {
         db = client.db(process.env.DB_NAME); // Database name from .env
     } catch (error) {
         console.error("MongoDB connection error:", error);
+        process.exit(1); // Exit the process if MongoDB connection fails
     }
 }
 
@@ -83,10 +85,15 @@ app.put('/logs/:id', async (req, res) => {
 
     try {
         const logsCollection = db.collection('logs');
-        await logsCollection.updateOne(
+        const result = await logsCollection.updateOne(
             { _id: new ObjectId(id) },
             { $set: { message, timestamp: new Date().toISOString() } }
         );
+
+        if (result.modifiedCount === 0) {
+            return res.status(404).send('Log not found or not updated');
+        }
+
         res.status(200).send('Log updated');
     } catch (error) {
         console.error('Failed to update log:', error);
@@ -100,7 +107,12 @@ app.delete('/logs/:id', async (req, res) => {
 
     try {
         const logsCollection = db.collection('logs');
-        await logsCollection.deleteOne({ _id: new ObjectId(id) });
+        const result = await logsCollection.deleteOne({ _id: new ObjectId(id) });
+
+        if (result.deletedCount === 0) {
+            return res.status(404).send('Log not found');
+        }
+
         res.status(200).send('Log deleted');
     } catch (error) {
         console.error('Failed to delete log:', error);
