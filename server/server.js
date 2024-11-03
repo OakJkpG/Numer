@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const fs = require('fs');
 const { MongoClient, ObjectId } = require('mongodb');
+const deleteOldLogs = require('./deleteOldLogs'); // Ensure you have this module implemented
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -119,6 +120,9 @@ app.delete('/logs/:id', async (req, res) => {
         res.status(500).send('Error deleting log');
     }
 });
+
+// Automatically delete old logs if applicable
+deleteOldLogs(); // Call the function to delete old logs if necessary
 
 // Start the server
 app.listen(port, () => {
