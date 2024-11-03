@@ -1,9 +1,19 @@
 {
-  "devDependencies": {
-    "concurrently": "^9.0.1"
+  "name": "numerical-methods-app",
+  "version": "1.0.0",
+  "description": "A numerical methods calculator with both client and server components",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && node server.js",
+    "client": "cd client && npm start",
+    "build": "cd client && npm run build",
+    "deploy": "cd client && npm run build && cd ../server && node server.js"
   },
   "dependencies": {
-    "mongoose": "^8.8.0",
-    "sqlite3": "^5.1.7"
+    "mongoose": "^8.8.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
   }
 }
