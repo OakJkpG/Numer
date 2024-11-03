@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -5,23 +7,22 @@ const fs = require('fs');
 const { MongoClient, ObjectId } = require('mongodb');
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
 // Connection URI and MongoDB client
-const uri = process.env.MONGO_URI || 'mongodb://localhost:27017';
+const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri);
-let db;
+let db;;
 
-// Connect to MongoDB
 async function connectToMongoDB() {
     try {
         await client.connect();
         console.log("Connected to MongoDB!");
-        db = client.db('numer'); // Set your database name
+        db = client.db(process.env.DB_NAME); // Database name from .env
     } catch (error) {
         console.error("MongoDB connection error:", error);
     }
@@ -34,35 +35,34 @@ app.get('/', (req, res) => {
     res.send('Welcome to the server!');
 });
 
-// Route to display logs
+// Route to retrieve logs
 app.get('/logs', async (req, res) => {
     try {
         const logsCollection = db.collection('logs');
         const logs = await logsCollection.find({}).toArray();
-        res.status(200).json(logs); // Return logs as JSON
+        res.status(200).json(logs); // Send logs as JSON
     } catch (err) {
         console.error('Error retrieving logs:', err);
         res.status(500).send('Error retrieving logs from database');
     }
 });
 
-// Logging route for client logs
+// Route to add a log entry
 app.post('/logs', async (req, res) => {
     const { message } = req.body;
-    console.log('Received log from client:', message); // Log to server console
+    console.log('Received log from client:', message); // Log to console for server
 
-    // Create log object to store in MongoDB
     const logEntry = {
-        message: message,
+        message,
         timestamp: new Date().toISOString(),
     };
 
     try {
-        // Append log to MongoDB
+        // Insert log into MongoDB
         const logsCollection = db.collection('logs');
         await logsCollection.insertOne(logEntry);
 
-        // Append log to a file as well (optional)
+        // Optionally append log to a file
         fs.appendFile('client-logs.txt', `${logEntry.timestamp}: ${logEntry.message}\n`, (err) => {
             if (err) {
                 console.error('Failed to write log to file:', err);
@@ -76,14 +76,17 @@ app.post('/logs', async (req, res) => {
     }
 });
 
-// Update a log by ID
+// Route to update a log by ID
 app.put('/logs/:id', async (req, res) => {
     const { id } = req.params;
     const { message } = req.body;
 
     try {
         const logsCollection = db.collection('logs');
-        await logsCollection.updateOne({ _id: new ObjectId(id) }, { $set: { message, timestamp: new Date().toISOString() } });
+        await logsCollection.updateOne(
+            { _id: new ObjectId(id) },
+            { $set: { message, timestamp: new Date().toISOString() } }
+        );
         res.status(200).send('Log updated');
     } catch (error) {
         console.error('Failed to update log:', error);
@@ -91,7 +94,7 @@ app.put('/logs/:id', async (req, res) => {
     }
 });
 
-// Delete a log by ID
+// Route to delete a log by ID
 app.delete('/logs/:id', async (req, res) => {
     const { id } = req.params;
 
